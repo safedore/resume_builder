@@ -5,6 +5,7 @@ summary = "Enthusiastic and confident web developer with 2 years of hands-on exp
           "performance under tight deadlines and committed to delivering exceptional results. Thrives in " \
           "collaborative environments and excels under strong leadership. "
 
+skills = "Python, Dart, Django, Flask, Flutter, HTML, JavaScript, Android"
 def get_user_info():
     print("Please enter your information:")
     name = input("Name: ")
@@ -13,7 +14,7 @@ def get_user_info():
     # summary = input("Summary: ")
     experience = input("Experience: ")
     education = input("Education: ")
-    skills = input("Technical Skills: ")
+    # skills = input("Technical Skills: ")
     return {
         "name": name,
         "email": email,
@@ -62,6 +63,9 @@ def generate_resume(info):
         doc.add_paragraph(f"{i}. {project}")
 
     doc.save('web_developer_resume.docx')
+
+    from docx2pdf import convert
+    convert('web_developer_resume.docx')
     print("Resume generated successfully!")
 
 def main():
