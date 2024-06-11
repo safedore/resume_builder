@@ -10,6 +10,20 @@ summary = ("Enthusiastic and confident web developer with 2 years of hands-on ex
 
 skills = "Python, Dart, Django, Flask, Flutter, HTML, JavaScript, Android"
 
+experience = {
+        "company": "Riss Technologies",
+        "title": "Web-App Developer",
+        "duration": "June 2022 - May 2024",
+        "responsibilities": [
+            "Developed and maintained web applications using Django and Flask.",
+            "Created prototype mobile applications using Flutter.",
+            "Collaborated with cross-functional teams to define, design, and ship new features.",
+            "Resolved technical issues under tight deadlines.",
+            "Acted as a mentor at times to colleagues.",
+            "Participated in code reviews and provided constructive feedback to peers."
+        ]
+    }
+
 def get_user_info():
     print("Please enter your information:")
     name = input("Name: ")
@@ -19,8 +33,8 @@ def get_user_info():
     github = input("GitHub Profile: ")
     experience = input("Experience: ")
     education = input("Education: ")
-    achievements = input("Achievements: ")
-    certifications = input("Certifications: ")
+    # achievements = input("Achievements: ")
+    # certifications = input("Certifications: ")
     languages = input("Languages: ")
     volunteer = input("Volunteer Experience: ")
     return {
