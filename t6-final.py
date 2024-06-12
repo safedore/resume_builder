@@ -1,22 +1,22 @@
 from docx import Document
-from docx.shared import Pt
+from docx.shared import Pt, RGBColor
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 from docx2pdf import convert
 
 name = 'Safedore'
 email = 'safedore.private@gmail.com'
-phone = '7034507102'
+phone = '+91 7034507102'
 education = ['Bachelor of Computer Applications', 'June 2019 - April 2022']
-languages = [ 'Malayalam', 'Hindi', '', '',  'English']
-linkedin = 'None'
-github = 'None'
+languages = ['Malayalam', 'Hindi', '', '', 'English']
+linkedin = 'http://www.linkedin.com/in/riswan-abdussalam-1222451b5'
+github = 'http://www.github.com/safedore'
 
 summary = ("Enthusiastic and confident web developer with 2 years of hands-on experience in Flutter, Flask, "
            "and Django. Proficient in developing high-performance applications and websites. Skilled in optimizing "
            "performance under tight deadlines and committed to delivering exceptional results. Thrives in "
            "collaborative environments and excels under strong leadership.")
 
-skills = ["Dart, Flutter", "HTML", "JavaScript", "PHP, Laravel", "Python, Django, Flask", ]
+skills = ["Dart, Flutter", "HTML", "JavaScript", "PHP, Laravel", "Python, Django, Flask"]
 
 experience = [
     {
@@ -63,10 +63,14 @@ def add_heading(doc, text, level, align='left'):
         heading.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
 
 
-def add_paragraph(doc, text, bullet=False):
+def add_paragraph(doc, text, bullet=False, align=False, color=None):
     paragraph = doc.add_paragraph()
     run = paragraph.add_run(text)
     run.font.size = Pt(10)
+    if color:
+        run.font.color.rgb = RGBColor(*color)
+    if align:
+        paragraph.alignment = WD_PARAGRAPH_ALIGNMENT.JUSTIFY
     if bullet:
         paragraph.style = 'List Bullet'
     return paragraph
@@ -77,62 +81,64 @@ def generate_resume(info):
     # Setting margins to fit content on a single page
     sections = doc.sections
     for section in sections:
-        section.top_margin = Pt(30)
-        section.bottom_margin = Pt(30)
+        section.top_margin = Pt(20)
+        section.bottom_margin = Pt(10)
         section.left_margin = Pt(30)
         section.right_margin = Pt(30)
 
-    add_heading(doc, 'Safedore', 0, 'center')
+    add_heading(doc, 'Riswan Abdussalam', 0, 'center')
 
     # Personal Information
     add_heading(doc, 'Personal Information', level=1)
     personal_info = [
-        f"Name: {info['name']} ",
+        f"Name: {info['name']} \n"
         f"Phone: {info['phone']} || Email: {info['email']}",
-        f"GitHub: {info['github']} || LinkedIn: {info['linkedin']}"
+        f"GitHub: {info['github']}\nLinkedIn: {info['linkedin']}"
     ]
     for item in personal_info:
-        add_paragraph(doc, item)
+        if 'github' in item.lower():
+            # print(item.)
+            add_paragraph(doc, item, color=(0, 0, 255))
+        else:
+            add_paragraph(doc, item)
 
     # Summary
     add_heading(doc, 'Summary', level=1)
-    add_paragraph(doc, info['summary'])
+    add_paragraph(doc, info['summary'], align=True)
 
     # Experience
     add_heading(doc, 'Experience', level=1)
     for exp in info['experience']:
-        add_paragraph(doc, f"Company: {exp['company']}, \nTitle: {exp['title']}, \nDuration: {exp['duration']}")
+        add_paragraph(doc, f"Company: {exp['company']}, \nTitle: {exp['title']}, \nDuration: {exp['duration']}", align=False)
         for responsibility in exp['responsibilities']:
-            add_paragraph(doc, responsibility, bullet=True)
+            add_paragraph(doc, responsibility, bullet=True, align=False)
 
+        # Projects
+        add_heading(doc, 'Projects', level=1)
+        for project in info['projects']:
+            add_paragraph(doc, project, bullet=True, align=False)
     # Education
     add_heading(doc, 'Education', level=1)
-    add_paragraph(doc, f"{education[0]}, \nDuration: {education[1]}")
+    add_paragraph(doc, f"{education[0]}, \nDuration: {education[1]}", align=False)
 
     # Create a table for Languages and Technical Skills
-    add_heading(doc, 'Technical Skills                                                            Languages', level=1, align='left')
+    add_heading(doc, 'Technical Skills                                                            Languages Spoken', level=1, align='left')
     table = doc.add_table(rows=max(len(info['skills']), len(info['languages'])) + 1, cols=2)
     table.autofit = True
 
     # Add headings for Skills and Languages, and make them bold
-    # table.cell(0, 0).text = 'Skills:'
-    # table.cell(0, 1).text = 'Languages Spoken:'
     for cell in table.rows[0].cells:
         for paragraph in cell.paragraphs:
             for run in paragraph.runs:
                 run.bold = True
 
     # Populate the table with skills and languages
-    for i in range(-1, len(info['skills'])-1):
+    for i in range(-1, max(len(info['skills'])-1, len(info['languages'])-1)):
         if i < len(info['skills']):
             table.cell(i + 1, 0).text = info['skills'][i]
         if i < len(info['languages']):
             table.cell(i + 1, 1).text = info['languages'][i]
 
-    # Projects
-    add_heading(doc, 'Projects', level=1)
-    for project in info['projects']:
-        add_paragraph(doc, project, bullet=True)
 
     doc.save('web_developer_resume.docx')
     convert('web_developer_resume.docx')
