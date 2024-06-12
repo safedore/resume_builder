@@ -3,7 +3,7 @@ from docx.shared import Pt, RGBColor
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 from docx2pdf import convert
 
-name = 'Safedore'
+name = 'Riswan Abdussalam'
 email = 'safedore.private@gmail.com'
 phone = '+91 7034507102'
 education = ['Bachelor of Computer Applications', 'June 2019 - April 2022']
@@ -140,8 +140,8 @@ def generate_resume(info):
             table.cell(i + 1, 1).text = info['languages'][i]
 
 
-    doc.save('web_developer_resume.docx')
-    convert('web_developer_resume.docx')
+    doc.save('web_developer_resume_np.docx')
+    convert('web_developer_resume_np.docx')
     print("Resume generated successfully!")
 
 
